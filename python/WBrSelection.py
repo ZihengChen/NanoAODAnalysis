@@ -31,6 +31,7 @@ class WBrSelection(Module):
         self.out.branch("b_multiplicity_taus", "I")
         self.out.branch("b_multiplicity_jets", "I")
         self.out.branch("b_multiplicity_bjets", "I")
+        self.out.branch("b_dilepton_m", "F")
 
         self.add_branch_object("b_leptonOne") # p4, relIso, pdgId
         self.add_branch_object("b_leptonTwo") # p4, relIso, pdgId
@@ -170,7 +171,8 @@ class WBrSelection(Module):
             if len(self.jets)<2: return False
 
             # # z-veto cut
-            # if 80<(self.muons[0].p4()+self.muons[1].p4()).M()<100: return False
+            self.dileptonMass = (self.muons[0].p4()+self.muons[1].p4()).M()
+            # if 80<self.dileptonMass <100: return False
             
             # fill Channel
             self.channel = 1
@@ -191,7 +193,8 @@ class WBrSelection(Module):
             # nJets cut
             if len(self.jets)<2: return False
             # # z-veto cut
-            # if 80<(self.electrons[0].p4()+self.electrons[1].p4()).M()<100: return False
+            self.dileptonMass = (self.electrons[0].p4()+self.electrons[1].p4()).M()
+            # if 80<self.dileptonMass<100: return False
                 
             # fill Channel
             self.channel = 2
@@ -210,6 +213,8 @@ class WBrSelection(Module):
             # nJets cut
             if len(self.jets)<2: return False
 
+            self.dileptonMass = (self.muons[0].p4()+self.electrons[0].p4()).M()
+
             # fill Channel
             self.channel = 3
             self.fill_branch_object("b_leptonOne", p4=self.muons[0].p4(), pdgId=self.muons[0].charge*13, relIso=self.muons[0].pfRelIso03_all )
@@ -225,6 +230,8 @@ class WBrSelection(Module):
             if self.muons[0].charge * self.taus[0].charge > 0: return False
             # nJets cut
             if len(self.jets)<2: return False
+
+            self.dileptonMass = (self.muons[0].p4()+self.taus[0].p4()).M()
 
             # fill Channel
             self.channel = 5
@@ -242,6 +249,8 @@ class WBrSelection(Module):
             # nJets cut
             if len(self.jets)<2: return False
 
+            self.dileptonMass = (self.electrons[0].p4()+self.taus[0].p4()).M()
+
             # fill Channel
             self.channel = 9
             self.fill_branch_object("b_leptonOne", p4=self.electrons[0].p4(), pdgId=self.electrons[0].charge*11, relIso=self.electrons[0].pfRelIso03_all )
@@ -258,9 +267,11 @@ class WBrSelection(Module):
         self.out.fillBranch("b_channel", self.channel)
         self.out.fillBranch("b_multiplicity_electrons", len(self.electrons) )
         self.out.fillBranch("b_multiplicity_muons", len(self.muons))
-        self.out.fillBranch("b_multiplicity_taus", len(self.muons))
+        self.out.fillBranch("b_multiplicity_taus", len(self.taus))
         self.out.fillBranch("b_multiplicity_jets", len(self.jets))
         self.out.fillBranch("b_multiplicity_bjets", len(self.bjets))
+
+        self.out.fillBranch("b_dilepton_m", self.dileptonMass )
         return True
 
 

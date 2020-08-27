@@ -16,6 +16,7 @@ stage_dir  = 'batch'
 output_dir = '/store/user/zchen/batchout'
 location   = 'lpc'
 
+nEvtPerJob = 3 # in unit of 1e6
 
 # -----------------------------
 # Set job configurations.  
@@ -29,57 +30,56 @@ samplesDict = {}
 #---------------  Running data   ---------------#
 #                                               #
 #################################################
-# dataset, nJobs, year, isData, suffix
+# dataset, nEvtPerJobIn1e6, year, isData, suffix
+
 
 # Single Electron
-samplesDict['2016_SingleElectron'] = [ #  2, 142, 43, 99, 62, 54, 95, 101 nanoaod files 
-    bm.JobConfig( '/SingleElectron/Run2016B-02Apr2020_ver1-v1/NANOAOD', 10, "2016", 1, '2016_SingleElectronRun2016B_ver1'),
-    bm.JobConfig( '/SingleElectron/Run2016B-02Apr2020_ver2-v1/NANOAOD', 30, "2016", 1, '2016_SingleElectronRun2016B_ver2'),
-    bm.JobConfig( '/SingleElectron/Run2016C-02Apr2020-v1/NANOAOD', 10, "2016", 1, '2016_SingleElectronRun2016C'),
-    bm.JobConfig( '/SingleElectron/Run2016D-02Apr2020-v1/NANOAOD', 20, "2016", 1, '2016_SingleElectronRun2016D'),
-    bm.JobConfig( '/SingleElectron/Run2016E-02Apr2020-v1/NANOAOD', 10, "2016", 1, '2016_SingleElectronRun2016E'),
-    bm.JobConfig( '/SingleElectron/Run2016F-02Apr2020-v1/NANOAOD', 10, "2016", 1, '2016_SingleElectronRun2016F'),
-    bm.JobConfig( '/SingleElectron/Run2016G-02Apr2020-v1/NANOAOD', 20, "2016", 1, '2016_SingleElectronRun2016G'),
-    bm.JobConfig( '/SingleElectron/Run2016H-02Apr2020-v1/NANOAOD', 20, "2016", 1, '2016_SingleElectronRun2016H')]
+samplesDict['2016_SingleElectron'] = [ 
+    bm.JobConfig( '/SingleElectron/Run2016B-02Apr2020_ver2-v1/NANOAOD', nEvtPerJob, "2016", 1, '2016_SingleElectronRun2016B_ver2'),
+    bm.JobConfig( '/SingleElectron/Run2016C-02Apr2020-v1/NANOAOD', nEvtPerJob, "2016", 1, '2016_SingleElectronRun2016C'),
+    bm.JobConfig( '/SingleElectron/Run2016D-02Apr2020-v1/NANOAOD', nEvtPerJob, "2016", 1, '2016_SingleElectronRun2016D'),
+    bm.JobConfig( '/SingleElectron/Run2016E-02Apr2020-v1/NANOAOD', nEvtPerJob, "2016", 1, '2016_SingleElectronRun2016E'),
+    bm.JobConfig( '/SingleElectron/Run2016F-02Apr2020-v1/NANOAOD', nEvtPerJob, "2016", 1, '2016_SingleElectronRun2016F'),
+    bm.JobConfig( '/SingleElectron/Run2016G-02Apr2020-v1/NANOAOD', nEvtPerJob, "2016", 1, '2016_SingleElectronRun2016G'),
+    bm.JobConfig( '/SingleElectron/Run2016H-02Apr2020-v1/NANOAOD', nEvtPerJob, "2016", 1, '2016_SingleElectronRun2016H')]
 
-samplesDict['2017_SingleElectron'] = [ # 46, 117, 32, 66, 104 nanoaod files
-    bm.JobConfig( '/SingleElectron/Run2017B-02Apr2020-v1/NANOAOD', 10, "2017", 1, '2017_SingleElectronRun2017B'),
-    bm.JobConfig( '/SingleElectron/Run2017C-02Apr2020-v1/NANOAOD', 20, "2017", 1, '2017_SingleElectronRun2017C'),
-    bm.JobConfig( '/SingleElectron/Run2017D-02Apr2020-v1/NANOAOD', 10, "2017", 1, '2017_SingleElectronRun2017D'),
-    bm.JobConfig( '/SingleElectron/Run2017E-02Apr2020-v1/NANOAOD', 10, "2017", 1, '2017_SingleElectronRun2017E'),
-    bm.JobConfig( '/SingleElectron/Run2017F-02Apr2020-v1/NANOAOD', 20, "2017", 1, '2017_SingleElectronRun2017F')]
+samplesDict['2017_SingleElectron'] = [ 
+    bm.JobConfig( '/SingleElectron/Run2017B-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", 1, '2017_SingleElectronRun2017B'),
+    bm.JobConfig( '/SingleElectron/Run2017C-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", 1, '2017_SingleElectronRun2017C'),
+    bm.JobConfig( '/SingleElectron/Run2017D-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", 1, '2017_SingleElectronRun2017D'),
+    bm.JobConfig( '/SingleElectron/Run2017E-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", 1, '2017_SingleElectronRun2017E'),
+    bm.JobConfig( '/SingleElectron/Run2017F-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", 1, '2017_SingleElectronRun2017F')]
 
-samplesDict['2018_SingleElectron'] = [ # 255, 100, 112, 479 nanoaod files
-    bm.JobConfig( '/EGamma/Run2018A-02Apr2020-v1/NANOAOD', 50, "2018", 1, '2018_SingleElectronRun2018A'),
-    bm.JobConfig( '/EGamma/Run2018B-02Apr2020-v1/NANOAOD', 20, "2018", 1, '2018_SingleElectronRun2018B'),
-    bm.JobConfig( '/EGamma/Run2018C-02Apr2020-v1/NANOAOD', 20, "2018", 1, '2018_SingleElectronRun2018C'),
-    bm.JobConfig( '/EGamma/Run2018D-02Apr2020-v1/NANOAOD', 90, "2018", 1, '2018_SingleElectronRun2018D')]
+samplesDict['2018_SingleElectron'] = [
+    bm.JobConfig( '/EGamma/Run2018A-02Apr2020-v1/NANOAOD', nEvtPerJob, "2018", 1, '2018_SingleElectronRun2018A'),
+    bm.JobConfig( '/EGamma/Run2018B-02Apr2020-v1/NANOAOD', nEvtPerJob, "2018", 1, '2018_SingleElectronRun2018B'),
+    bm.JobConfig( '/EGamma/Run2018C-02Apr2020-v1/NANOAOD', nEvtPerJob, "2018", 1, '2018_SingleElectronRun2018C'),
+    bm.JobConfig( '/EGamma/Run2018D-02Apr2020-v1/NANOAOD', nEvtPerJob, "2018", 1, '2018_SingleElectronRun2018D')]
 
 
 
 # Single Muon
-samplesDict['2016_SingleMuon'] = [ # 80 100 97 54 115 76 nanoaod files 
-    bm.JobConfig( '/SingleMuon/Run2016B-02Apr2020_ver1-v1/NANOAOD', 30, "2016", 1, '2016_SingleMuonRun2016B_ver1'),
-    bm.JobConfig( '/SingleMuon/Run2016B-02Apr2020_ver2-v1/NANOAOD', 30, "2016", 1, '2016_SingleMuonRun2016B_ver2'),
-    bm.JobConfig( '/SingleMuon/Run2016C-02Apr2020-v1/NANOAOD', 30, "2016", 1, '2016_SingleMuonRun2016C'),
-    bm.JobConfig( '/SingleMuon/Run2016D-02Apr2020-v1/NANOAOD', 30, "2016", 1, '2016_SingleMuonRun2016D'),
-    bm.JobConfig( '/SingleMuon/Run2016E-02Apr2020-v1/NANOAOD', 30, "2016", 1, '2016_SingleMuonRun2016E'),
-    bm.JobConfig( '/SingleMuon/Run2016F-02Apr2020-v1/NANOAOD', 30, "2016", 1, '2016_SingleMuonRun2016F'),
-    bm.JobConfig( '/SingleMuon/Run2016G-02Apr2020-v1/NANOAOD', 30, "2016", 1, '2016_SingleMuonRun2016G'),
-    bm.JobConfig( '/SingleMuon/Run2016H-02Apr2020-v1/NANOAOD', 30, "2016", 1, '2016_SingleMuonRun2016H')]
+samplesDict['2016_SingleMuon'] = [ 
+    bm.JobConfig( '/SingleMuon/Run2016B-02Apr2020_ver2-v1/NANOAOD', nEvtPerJob, "2016", 1, '2016_SingleMuonRun2016B_ver2'),
+    bm.JobConfig( '/SingleMuon/Run2016C-02Apr2020-v1/NANOAOD', nEvtPerJob, "2016", 1, '2016_SingleMuonRun2016C'),
+    bm.JobConfig( '/SingleMuon/Run2016D-02Apr2020-v1/NANOAOD', nEvtPerJob, "2016", 1, '2016_SingleMuonRun2016D'),
+    bm.JobConfig( '/SingleMuon/Run2016E-02Apr2020-v1/NANOAOD', nEvtPerJob, "2016", 1, '2016_SingleMuonRun2016E'),
+    bm.JobConfig( '/SingleMuon/Run2016F-02Apr2020-v1/NANOAOD', nEvtPerJob, "2016", 1, '2016_SingleMuonRun2016F'),
+    bm.JobConfig( '/SingleMuon/Run2016G-02Apr2020-v1/NANOAOD', nEvtPerJob, "2016", 1, '2016_SingleMuonRun2016G'),
+    bm.JobConfig( '/SingleMuon/Run2016H-02Apr2020-v1/NANOAOD', nEvtPerJob, "2016", 1, '2016_SingleMuonRun2016H')]
 
-samplesDict['2017_SingleMuon'] = [ # 93 108 57 112 116 nanoaod files 
-    bm.JobConfig( '/SingleMuon/Run2017B-02Apr2020-v1/NANOAOD', 30, "2017", 1, '2017_SingleMuonRun2017B'),
-    bm.JobConfig( '/SingleMuon/Run2017C-02Apr2020-v1/NANOAOD', 30, "2017", 1, '2017_SingleMuonRun2017C'),
-    bm.JobConfig( '/SingleMuon/Run2017D-02Apr2020-v1/NANOAOD', 30, "2017", 1, '2017_SingleMuonRun2017D'),
-    bm.JobConfig( '/SingleMuon/Run2017E-02Apr2020-v1/NANOAOD', 30, "2017", 1, '2017_SingleMuonRun2017E'),
-    bm.JobConfig( '/SingleMuon/Run2017F-02Apr2020-v1/NANOAOD', 30, "2017", 1, '2017_SingleMuonRun2017F')]
+samplesDict['2017_SingleMuon'] = [ 
+    bm.JobConfig( '/SingleMuon/Run2017B-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", 1, '2017_SingleMuonRun2017B'),
+    bm.JobConfig( '/SingleMuon/Run2017C-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", 1, '2017_SingleMuonRun2017C'),
+    bm.JobConfig( '/SingleMuon/Run2017D-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", 1, '2017_SingleMuonRun2017D'),
+    bm.JobConfig( '/SingleMuon/Run2017E-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", 1, '2017_SingleMuonRun2017E'),
+    bm.JobConfig( '/SingleMuon/Run2017F-02Apr2020-v1/NANOAOD', nEvtPerJob, "2017", 1, '2017_SingleMuonRun2017F')]
 
-samplesDict['2018_SingleMuon'] = [ # 225, 110, 79 293 nanoaod files 
-    bm.JobConfig( '/SingleMuon/Run2018A-02Apr2020-v1/NANOAOD', 50, "2018", 1, '2018_SingleMuonRun2018A'),
-    bm.JobConfig( '/SingleMuon/Run2018B-02Apr2020-v1/NANOAOD', 30, "2018", 1, '2018_SingleMuonRun2018B'),
-    bm.JobConfig( '/SingleMuon/Run2018C-02Apr2020-v1/NANOAOD', 20, "2018", 1, '2018_SingleMuonRun2018C'),
-    bm.JobConfig( '/SingleMuon/Run2018D-02Apr2020-v1/NANOAOD', 60, "2018", 1, '2018_SingleMuonRun2018D')]
+samplesDict['2018_SingleMuon'] = [
+    bm.JobConfig( '/SingleMuon/Run2018A-02Apr2020-v1/NANOAOD', nEvtPerJob, "2018", 1, '2018_SingleMuonRun2018A'),
+    bm.JobConfig( '/SingleMuon/Run2018B-02Apr2020-v1/NANOAOD', nEvtPerJob, "2018", 1, '2018_SingleMuonRun2018B'),
+    bm.JobConfig( '/SingleMuon/Run2018C-02Apr2020-v1/NANOAOD', nEvtPerJob, "2018", 1, '2018_SingleMuonRun2018C'),
+    bm.JobConfig( '/SingleMuon/Run2018D-02Apr2020-v1/NANOAOD', nEvtPerJob, "2018", 1, '2018_SingleMuonRun2018D')]
 
 
 
@@ -92,46 +92,46 @@ samplesDict['2018_SingleMuon'] = [ # 225, 110, 79 293 nanoaod files
 #################################################
 # top
 samplesDict['2016_top'] = [
-    # leptonic tt 119 nanoaod files 
+    # leptonic tt  
     bm.JobConfig( 
     dataset='/TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM',
-    nJobs=20, year="2016", isData=0, suffix='2016_TTTo2L2Nu'),
+    nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=0, suffix='2016_TTTo2L2Nu'),
 
-    # semilep tt 178 nanoaod files 
+    # semilep tt 
     bm.JobConfig( 
     dataset='/TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM',
-    nJobs=35, year="2016", isData=0, suffix='2016_TTToSemiLeptonic'),
+    nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=0, suffix='2016_TTToSemiLeptonic'),
 
-    # hadronic tt 117 nanoaod files 
+    # hadronic tt  
     bm.JobConfig( 
     dataset='/TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM',
-    nJobs=20, year="2016", isData=0, suffix='2016_TTToHadronic'),
+    nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=0, suffix='2016_TTToHadronic'),
 
-    # tW top 21 nanoaod files 
+    # tW top 
     bm.JobConfig( 
     dataset='/ST_tW_top_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM',
-    nJobs=5, year="2016", isData=0, suffix='2016_STtWTop'),
+    nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=0, suffix='2016_STtWTop'),
 
-    # tW antitop 21 nanoaod files 
+    # tW antitop 
     bm.JobConfig(
     dataset='/ST_tW_antitop_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM',
-    nJobs=5, year="2016", isData=0, suffix='2016_STtWAntiTop'),
+    nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=0, suffix='2016_STtWAntiTop'),
 ]
 
 # w
 samplesDict['2016_w'] = [
-    # wjets inclusive 19 nanoaod files
+    # wjets inclusive
     bm.JobConfig( 
     dataset='/WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM',
-    nJobs=5, year="2016", isData=0, suffix='2016_WJets'),
+    nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=0, suffix='2016_WJets'),
 ]
 
 # z
 samplesDict['2016_z'] = [
-    # zjets inclusive 76 nanoaod files
+    # zjets inclusive
     bm.JobConfig(
     dataset='/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8_ext2-v1/NANOAODSIM',
-    nJobs=15, year="2016", isData=0, suffix='2016_ZJets'),
+    nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=0, suffix='2016_ZJets'),
 ]
 
 
@@ -142,47 +142,47 @@ samplesDict['2016_z'] = [
 #################################################
 # top
 samplesDict['2017_top'] = [
-    # leptonic tt 76 nanoaod files 
+    # leptonic tt 
     bm.JobConfig( 
     dataset='/TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_new_pmx_102X_mc2017_realistic_v8-v1/NANOAODSIM',         
-    nJobs=15, year="2017", isData=0, suffix='2017_TTTo2L2Nu'),
+    nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=0, suffix='2017_TTTo2L2Nu'),
 
-    # semilep tt 200 nanoaod files 
+    # semilep tt 
     bm.JobConfig( 
     dataset='/TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8-v1/NANOAODSIM',         
-    nJobs=40, year="2017", isData=0, suffix='2017_TTToSemiLeptonic'),
+    nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=0, suffix='2017_TTToSemiLeptonic'),
 
-    # hadronic tt 102 nanoaod files 
+    # hadronic tt
     bm.JobConfig( 
     dataset='/TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_new_pmx_102X_mc2017_realistic_v8-v1/NANOAODSIM',         
-    nJobs=20, year="2017", isData=0, suffix='2017_TTToHadronic'),
+    nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=0, suffix='2017_TTToHadronic'),
 
-    # tW top 7 nanoaod files 
+    # tW top
     bm.JobConfig( 
     dataset='/ST_tW_top_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_new_pmx_102X_mc2017_realistic_v8-v1/NANOAODSIM',         
-    nJobs=5, year="2017", isData=0, suffix='2017_STtWTop'),
+    nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=0, suffix='2017_STtWTop'),
     
-    # tW antitop 32 nanoaod files 
+    # tW antitop
     bm.JobConfig( 
     dataset='/ST_tW_antitop_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8-v1/NANOAODSIM',         
-    nJobs=10, year="2017", isData=0, suffix='2017_STtWAntiTop'),
+    nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=0, suffix='2017_STtWAntiTop'),
 ]
 
 # w
 samplesDict['2017_w'] = [
-    # wjets inclusive 23 nanoaod files
+    # wjets inclusive
     bm.JobConfig( 
     dataset='/WJetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8-v1/NANOAODSIM',
-    nJobs=5, year="2017", isData=0, suffix='2017_WJets'),
+    nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=0, suffix='2017_WJets'),
 ]
 
 
 # z
 samplesDict['2017_z'] = [
-    # zjets inclusive 43 nanoaod files 
+    # zjets inclusive
     bm.JobConfig( 
     dataset='/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_new_pmx_102X_mc2017_realistic_v8-v1/NANOAODSIM',
-    nJobs=10, year="2017", isData=0, suffix='2017_ZJets'),
+    nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=0, suffix='2017_ZJets'),
 ]
 
 
@@ -193,46 +193,46 @@ samplesDict['2017_z'] = [
 #################################################
 # top
 samplesDict['2018_top'] = [
-    # leptonic tt 60 nanoaod files 
+    # leptonic tt 
     bm.JobConfig( 
         dataset='/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',         
-        nJobs=10, year="2018", isData=0, suffix='2018_TTTo2L2Nu'),
+        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=0, suffix='2018_TTTo2L2Nu'),
     
-    # semilep tt 94 nanoaod files 
+    # semilep tt
     bm.JobConfig( 
     dataset='/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',         
-    nJobs=20, year="2018", isData=0, suffix='2018_TTToSemiLeptonic'),
+    nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=0, suffix='2018_TTToSemiLeptonic'),
     
-    # hadronic tt 109 nanoaod files 
+    # hadronic tt
     bm.JobConfig( 
     dataset='/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',         
-    nJobs=20, year="2018", isData=0, suffix='2018_TTToHadronic'),        
+    nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=0, suffix='2018_TTToHadronic'),        
     
-    # tW top 11 nanoaod files 
+    # tW top 
     bm.JobConfig( 
         dataset='/ST_tW_top_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21_ext1-v1/NANOAODSIM',         
-        nJobs=5, year="2018", isData=0, suffix='2018_STtWTop'),   
-    # tW antitop 9 nanoaod files 
+        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=0, suffix='2018_STtWTop'),   
+    # tW antitop
     bm.JobConfig( 
         dataset='/ST_tW_antitop_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21_ext1-v1/NANOAODSIM',         
-        nJobs=5, year="2018", isData=0, suffix='2018_STtWAntiTop'),        
+        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=0, suffix='2018_STtWAntiTop'),        
 ]
 
 # w
 samplesDict['2018_w'] = [
-    # wjets inclusive 44 nanoaod files
+    # wjets inclusive
     bm.JobConfig( 
         dataset='/WJetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
-        nJobs=10, year="2018", isData=0, suffix='2018_WJets'),
+        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=0, suffix='2018_WJets'),
 ]
 
 
 # z
 samplesDict['2018_z'] = [
-    # zjets inclusive 6 nanoaod files
+    # zjets inclusive
     bm.JobConfig( 
         dataset='/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
-        nJobs=10, year="2018", isData=0, suffix='2018_ZJets'),
+        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=0, suffix='2018_ZJets'),
 ]
 
 
@@ -264,22 +264,22 @@ batchMaster.submit_to_batch(doSubmit=True)
 # samplesDict['2016_vv'] = [
 #     bm.JobConfig( 
 #         dataset='/WWTo2L2Nu_13TeV-powheg/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM',
-#         nJobs=10, year="2016", isData=False, suffix='2016_WWTo2L2Nu'),
+#         nEvtPerJobIn1e6=10, year="2016", isData=False, suffix='2016_WWTo2L2Nu'),
 
 #     bm.JobConfig( 
 #         dataset='/WZ_TuneCUETP8M1_13TeV-pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM',
-#         nJobs=10, year="2016", isData=False, suffix='2016_WZ'),
+#         nEvtPerJobIn1e6=10, year="2016", isData=False, suffix='2016_WZ'),
 # ]
 
 # # vv
 # samplesDict['2017_vv'] = [
 #     bm.JobConfig( 
 #         dataset='/WWTo2L2Nu_NNPDF31_TuneCP5_13TeV-powheg-pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8-v1/NANOAODSIM',
-#         nJobs=10, year="2017", isData=False, suffix='2017_WWTo2L2Nu'),
+#         nEvtPerJobIn1e6=10, year="2017", isData=False, suffix='2017_WWTo2L2Nu'),
 
 #     bm.JobConfig( 
 #         dataset='/WZ_TuneCP5_13TeV-pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8-v1/NANOAODSIM',
-#         nJobs=10, year="2017", isData=False, suffix='2017_WZ'),
+#         nEvtPerJobIn1e6=10, year="2017", isData=False, suffix='2017_WZ'),
 # ]
 
 
@@ -288,11 +288,11 @@ batchMaster.submit_to_batch(doSubmit=True)
 # samplesDict['2016_vv'] = [
 #     bm.JobConfig( 
 #         dataset='/WWTo2L2Nu_NNPDF31_TuneCP5_13TeV-powheg-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
-#         nJobs=10, year="2016", isData=False, suffix='2016_WWTo2L2Nu'),
+#         nEvtPerJobIn1e6=10, year="2016", isData=False, suffix='2016_WWTo2L2Nu'),
 
 #     bm.JobConfig( 
 #         dataset='/WZ_TuneCP5_13TeV-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
-#         nJobs=10, year="2016", isData=False, suffix='2016_WZ'),
+#         nEvtPerJobIn1e6=10, year="2016", isData=False, suffix='2016_WZ'),
 # ]
 
 

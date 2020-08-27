@@ -6,9 +6,11 @@ ROOT.PyConfig.IgnoreCommandLineOptions = True
 from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import PostProcessor
 
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.countHistogramsModule import countHistogramsModule
+from PhysicsTools.NanoAODTools.postprocessing.modules.common.puWeightProducer import *
 
 # constomized analysis modules
 from PhysicsAnalysis.NanoAODAnalysis.WBrSelection import WBrSelectionModule
+
 
 
 def get_lumi_json(year, isData):
@@ -57,7 +59,7 @@ if __name__ == "__main__":
     from optparse import OptionParser
     parser = OptionParser(usage=''' 
         %prog [options] outputDir inputFiles. where inputFiles can be 'nanoaod1.root nanoaod2.root' or 'input.txt'
-        e.g.  python PhysicsAnalysis/NanoAODAnalysis/python/WBrAnalyzer.py localout input.txt --year=2018 --isData=0 --max-entries=1000 ''')
+        e.g.  python PhysicsAnalysis/NanoAODAnalysis/python/WBrAnalyzer.py localout test/inputMC.txt --year=2018 --isData=0 --max-entries=1000 ''')
 
     parser.add_option("--year", dest="year", type="string", default="2016", help="which year of the dataset (defalt: 2016)")
     parser.add_option("--isData", dest="isData", type="int", default=1, help="whether DATA or MC (defalt is 1) is data")
@@ -75,7 +77,13 @@ if __name__ == "__main__":
     # setup modules
     modules = []
     modules.append( countHistogramsModule() )
+    
     modules.append( WBrSelectionModule(options.year, options.isData)  )
+
+    if not options.isData == 1:
+        eval("modules.append( puAutoWeight_{}())".format(options.year))
+
+    print("{} modules will be applied".format(len(modules)))
     
     # make list of inputFiles for .txt
     inputFilesFull = handle_list_of_input_files(inputFiles)

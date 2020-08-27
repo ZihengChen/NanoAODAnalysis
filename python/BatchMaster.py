@@ -1,4 +1,5 @@
 import sys, os, glob, subprocess, fileinput, math, datetime
+from subprocess import PIPE, Popen
 
 def get_current_time():
     now = datetime.datetime.now()
@@ -17,11 +18,22 @@ def inputFiles_from_txt(txt):
     inputFiles = [f.strip() for f in inputFiles]
     return inputFiles
 
+
+def cmdline(command):
+    process = Popen(
+        args=command,
+        stdout=PIPE,
+        shell=True
+    )
+    return process.communicate()[0]
+
+
 class JobConfig():
     '''Class for storing configuration for each dataset'''
-    def __init__(self, dataset, nJobs, year, isData, suffix):
+    def __init__(self, dataset, nEvtPerJobIn1e6, year, isData, suffix):
         self._dataset   = dataset
-        self._nJobs     = nJobs
+        self._nEvtPerJobIn1e6 = nEvtPerJobIn1e6
+
 
         # need to pass to executable
         self._year      = year
@@ -45,28 +57,38 @@ class BatchMaster():
     
     def split_jobs_for_cfg(self, cfg):
         # query the root files using das commandline tool
+        print "das query files"
         dasQuery_outFile = 'dasQuery_{}.txt'.format(cfg._suffix)
         dasQuery_command = 'das_client -query="file dataset={}" > {}'.format(cfg._dataset, dasQuery_outFile)
         os.system(dasQuery_command)
+
         ftxt = open(dasQuery_outFile)
         fileList = ["root://cmsxrootd.fnal.gov/" + f.strip() for f in ftxt.readlines()]
         ftxt.close()
-
         nFiles = len(fileList)
-        print "DAS for dataset: ", cfg._dataset
-        print "*********************************************"
-        print "*  ", nFiles, "files for ", cfg._suffix
-        print "*********************************************"
-        
-        print "save the DAS output to ", dasQuery_outFile
-        
-        # Split files to requested number.  Cannot exceed the number of files being run over.
-        cfg._nJobs = nFiles if cfg._nJobs > nFiles else cfg._nJobs
 
-        nFilesPerJob = int(math.ceil(float(nFiles)/float(cfg._nJobs)))
+        # query number of events in the dataset
+        print "das query number of events"
+        output  = cmdline('das_client -query="dataset={} | grep dataset.nevents " '.format(cfg._dataset))
+        for l in output.splitlines():
+            try: nEvents = int(l); break
+            except: continue
+        
+
+        # Split files to requested number.  Cannot exceed the number of files being run over.
+        nJobs = int(math.ceil(nEvents/(1000000.0*cfg._nEvtPerJobIn1e6)))
+        nJobs = nFiles if nJobs > nFiles else nJobs
+        nFilesPerJob = int(math.ceil(float(nFiles)/float(nJobs)))
         sources = [ fileList[i:i+nFilesPerJob] for i in range(0, len(fileList), nFilesPerJob) ]
 
-        # return a list with len=cfg._nJobs, For the given dataset
+        print "DAS for dataset: ", cfg._dataset
+        print "*********************************************"
+        print "*  dataset: ", cfg._suffix
+        print "*  {} events in {} files, raw_nJobs {}, nJobs {}".format(nEvents, nFiles, nJobs, len(sources))
+        print "*********************************************"        
+        print "save the DAS output to ", dasQuery_outFile
+
+        # return a list with len=nJobs, For the given dataset
         return sources
 
     def make_batch_lpc(self, cfg):
