@@ -44,8 +44,30 @@ echo $PATH
 pwd
 cat input_${SUFFIX}_${COUNT}.txt
 
+
+
 ### Run the analyzer
-python PhysicsAnalysis/NanoAODAnalysis/python/${ANALYZER}.py outDir ${INPUT_TXT_FILENAME} --year=${YEAR} --isData=${ISDATA} 
+
+COUNTER=0
+while IFS= read NANOAOD
+do
+    # xrdcp to local src folder first
+    # analyzer is upto 100x-200x faster than xrd streaming. Ziheng
+    xrdcp ${NANOAOD} ./temp.root
+    python PhysicsAnalysis/NanoAODAnalysis/python/${ANALYZER}.py outDir temp.root  --postfix=${COUNTER} --year=${YEAR} --isData=${ISDATA} 
+    # --max-entries=30000
+    rm temp.root
+    COUNTER=$((COUNTER+1))
+
+done <$INPUT_TXT_FILENAME
+
+
+
+# comment by Ziheng
+# this access the root file via xrd file streaming service
+# analyzing events is about 20-200 events/second
+# this is slow. you need to xrdcp root to local node first instead of streaming it in fly.
+# python PhysicsAnalysis/NanoAODAnalysis/python/${ANALYZER}.py outDir ${INPUT_TXT_FILENAME} --year=${YEAR} --isData=${ISDATA} 
 
 ls
 ls outDir/

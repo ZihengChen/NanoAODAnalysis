@@ -115,8 +115,8 @@ class BatchMaster():
 
         if self._location == 'lpc':
             batch_tmp.write('Requirements          = OpSys == "LINUX"&& (Arch != "DUMMY" )\n')
-            batch_tmp.write('request_disk          = 2000000\n')
-            batch_tmp.write('request_memory        = 4096\n')
+            batch_tmp.write('request_disk          = 10000000\n') # 10 GB to xrdcp temp nanoAOD instead of slow root://cmsxrootd.fnal.gov/, Ziheng 
+            batch_tmp.write('request_memory        = 3072\n') #3GB ram
 
         batch_tmp.write('\n')
 

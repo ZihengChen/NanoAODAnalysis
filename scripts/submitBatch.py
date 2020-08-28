@@ -16,7 +16,7 @@ stage_dir  = 'batch'
 output_dir = '/store/user/zchen/batchout'
 location   = 'lpc'
 
-nEvtPerJob = 3 # in unit of 1e6
+nEvtPerJob = 12 # in unit of 1e6
 
 # -----------------------------
 # Set job configurations.  

@@ -59,11 +59,13 @@ if __name__ == "__main__":
     from optparse import OptionParser
     parser = OptionParser(usage=''' 
         %prog [options] outputDir inputFiles. where inputFiles can be 'nanoaod1.root nanoaod2.root' or 'input.txt'
-        e.g.  python PhysicsAnalysis/NanoAODAnalysis/python/WBrAnalyzer.py localout test/inputMC.txt --year=2018 --isData=0 --max-entries=1000 ''')
-
+        e.g.  python PhysicsAnalysis/NanoAODAnalysis/python/WBrAnalyzer.py localout test/inputMC.txt --postfix=0 --year=2018 --isData=0 --max-entries=1000 ''')
+    
+    parser.add_option("-s", "--postfix",dest="postfix", type="string", default=None, help="Postfix which will be appended to the file name (default: _Friend for friends, _Skim for skims)")
     parser.add_option("--year", dest="year", type="string", default="2016", help="which year of the dataset (defalt: 2016)")
     parser.add_option("--isData", dest="isData", type="int", default=1, help="whether DATA or MC (defalt is 1) is data")
     parser.add_option("-N", "--max-entries", dest="maxEntries", type="long",  default=None, help="max n event per file(default is None, all events in tree)")
+
     (options, args) = parser.parse_args()
 
     # get inputs and outDir from args
@@ -96,10 +98,12 @@ if __name__ == "__main__":
     print "use file for keep and drop features: " + outputbranchsel
 
     # run analyzer
-    p=PostProcessor(outdir, inputFilesFull, 
-                    modules    = modules,
-                    jsonInput  = jsonInput,
-                    maxEntries = options.maxEntries,
-                    outputbranchsel = outputbranchsel
-                    )
+    p=PostProcessor(
+        outdir, inputFilesFull, 
+        modules    = modules,
+        jsonInput  = jsonInput,
+        maxEntries = options.maxEntries,
+        outputbranchsel = outputbranchsel,
+        postfix = options.postfix
+    )
     p.run()
