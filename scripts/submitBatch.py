@@ -4,7 +4,7 @@ import PhysicsAnalysis.NanoAODAnalysis.BatchMaster as bm
 import sys
 # das_client -query="dataset=/SingleElectron/Run2018A*-02Apr2020-v1/NANOAOD" # | wc -l
 # python PhysicsAnalysis/NanoAODAnalysis/python/WBrAnalyzer.py localout ../../mc.root --year=2018 --isData=0 --max-entries=30000 
-# python PhysicsAnalysis/NanoAODAnalysis/python/WBrAnalyzer.py localout ../../data2.root --year=2018 --isData=1 --max-entries=30000 
+# python PhysicsAnalysis/NanoAODAnalysis/python/WBrAnalyzer.py localout ../../data2.root --year=2018 --isData=1 --max-entries=100000 
 
 
 
@@ -97,7 +97,7 @@ samplesDict['2018_SingleMuon'] = [
 
 
 
-nEvtPerJob = 5 # slower jobs, for sig MC. in unit of 1e6 , 5-10 are good settings. 
+nEvtPerJob = 4
 
 #################################################
 #                                               #
