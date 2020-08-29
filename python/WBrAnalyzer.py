@@ -7,9 +7,13 @@ from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import Pos
 
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.countHistogramsModule import countHistogramsModule
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.puWeightProducer import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.common.PrefireCorr import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.btv.btagSFProducer import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetRecalib import *
 
 # constomized analysis modules
 from PhysicsAnalysis.NanoAODAnalysis.WBrSelection import WBrSelectionModule
+from PhysicsAnalysis.NanoAODAnalysis.WBrPreproc import WBrPreprocModule
 
 
 
@@ -78,12 +82,25 @@ if __name__ == "__main__":
     #-----------------------------------------------
     # setup modules
     modules = []
+    # counting ngen
     modules.append( countHistogramsModule() )
+    # pre processing
+    modules.append(WBrPreprocModule(options.year, options.isData) )
     
-    modules.append( WBrSelectionModule(options.year, options.isData)  )
-
-    if not options.isData == 1:
+    if not options.isData:
+        # btag reweighting
+        eval("modules.append( btagSF_deepcsvM_{}())".format(options.year))
+        # pu reweighting
         eval("modules.append( puAutoWeight_{}())".format(options.year))
+
+    # my selection
+    modules.append( WBrSelectionModule(options.year, options.isData)  )
+    # MC correction
+    if not options.isData:
+        # prefiring reweighting
+        if options.year in ["2016","2017"]:
+            eval("modules.append( PrefCorr{}())".format(options.year))
+    
 
     print("{} modules will be applied".format(len(modules)))
     

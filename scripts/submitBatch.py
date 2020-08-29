@@ -3,7 +3,9 @@ import PhysicsAnalysis.NanoAODAnalysis.BatchMaster as bm
 
 import sys
 # das_client -query="dataset=/SingleElectron/Run2016*-02Apr2020-v1/NANOAOD" # | wc -l
-# python PhysicsAnalysis/NanoAODAnalysis/python/WBrAnalyzer.py localout input.txt --year=2018 --isData=True --max-entries=1000 
+# python PhysicsAnalysis/NanoAODAnalysis/python/WBrAnalyzer.py localout ../../mc.root --year=2018 --isData=0 --max-entries=30000 
+# python PhysicsAnalysis/NanoAODAnalysis/python/WBrAnalyzer.py localout ../../data.root --year=2018 --isData=1 --max-entries=30000 
+
 
 
 # -----------------------------
@@ -16,7 +18,7 @@ stage_dir  = 'batch'
 output_dir = '/store/user/zchen/batchout'
 location   = 'lpc'
 
-nEvtPerJob = 12 # in unit of 1e6
+nEvtPerJob = 4 # in unit of 1e6
 
 # -----------------------------
 # Set job configurations.  

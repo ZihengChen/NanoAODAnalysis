@@ -25,6 +25,10 @@ class WBrSelection(Module):
     def beginFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
         self.out = wrappedOutputTree
         # event info
+        if not self.isData:
+            self.out.branch("b_genWeight",  "F")
+            self.out.branch("b_btagWeight",  "F")
+
         self.out.branch("b_channel",  "I")
         self.out.branch("b_multiplicity_electrons", "I")
         self.out.branch("b_multiplicity_muons", "I")
@@ -47,9 +51,13 @@ class WBrSelection(Module):
         self.event = event
 
         # HLT
-        passTrigger = self.check_hlt()
-        if not passTrigger: 
-            return False
+        self.passMuTrigger = event.b_passMuTrigger
+        self.passElTrigger = event.b_passElTrigger
+
+        # negative weight
+        self.genWeight = 1.0
+        if hasattr(event,'Generator_weight') and event.Generator_weight < 0:
+            self.genWeight = -1.0
 
         # muon loop
         self.loop_over_muons()
@@ -70,22 +78,6 @@ class WBrSelection(Module):
     # -----------------------------
     # object selection
     # -----------------------------
-    # HLT
-    def check_hlt(self):
-        HLT =  Object(self.event, "HLT")
-
-        passTrigger = False
-
-        # muon trigger
-        self.passMuTrigger = eval("HLT.{}".format(self.cfg["muTrg"]))
-        passTrigger |= self.passMuTrigger
-
-        # electron trigger
-        self.passElTrigger = eval("HLT.{}".format(self.cfg["elTrg"]))
-        passTrigger |= self.passElTrigger
-
-        return passTrigger
-
 
     # muons
     def loop_over_muons(self):
@@ -129,6 +121,8 @@ class WBrSelection(Module):
     def loop_over_jets(self):
         self.jets  = []
         self.bjets = []
+
+        self.btagWeight = 1.0
         for jet in Collection(self.event,"Jet"):
             # check overlap with passing muon
             muOverlap = any([jet.DeltaR(mu) < 0.4 for mu in self.muons])
@@ -144,6 +138,10 @@ class WBrSelection(Module):
                 # https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation#Recommendation_for_13_TeV_Data
                 if jet.btagDeepB > self.cfg["cutDeepCSVM"]:
                     self.bjets.append(jet)
+
+                    if not self.isData:
+                        self.btagWeight *= jet.btagSF_deepcsv_M
+
 
 
 
@@ -167,17 +165,18 @@ class WBrSelection(Module):
             if not (self.muons[0].pt>self.cfg["cutMu1Pt"] and self.muons[1].pt>self.cfg["cutMu2Pt"] ): return False
             # oppo sign cut
             if self.muons[0].charge * self.muons[1].charge > 0: return False
-            # nJets cut
-            if len(self.jets)<2: return False
+            # nJets nBJets cut
+            if not ( len(self.jets)>=2 and len(self.bjets)>=1 ): return False
 
             # # z-veto cut
-            self.dileptonMass = (self.muons[0].p4()+self.muons[1].p4()).M()
-            # if 80<self.dileptonMass <100: return False
+            leptonOne = self.muons[0] if self.muons[0].pt>self.muons[1].pt else self.muons[1]
+            leptonTwo = self.muons[1] if self.muons[0].pt>self.muons[1].pt else self.muons[0]
+            self.dileptonMass = (leptonOne.p4()+leptonTwo.p4()).M()
             
             # fill Channel
             self.channel = 1
-            self.fill_branch_object("b_leptonOne", p4=self.muons[0].p4(), pdgId=self.muons[0].charge*13, relIso=self.muons[0].pfRelIso03_all )
-            self.fill_branch_object("b_leptonTwo", p4=self.muons[1].p4(), pdgId=self.muons[1].charge*13, relIso=self.muons[1].pfRelIso03_all ) 
+            self.fill_branch_object("b_leptonOne", p4=leptonOne.p4(), pdgId=leptonOne.charge*13, relIso=leptonOne.pfRelIso03_all )
+            self.fill_branch_object("b_leptonTwo", p4=leptonTwo.p4(), pdgId=leptonTwo.charge*13, relIso=leptonTwo.pfRelIso03_all ) 
             
 
     
@@ -190,16 +189,17 @@ class WBrSelection(Module):
             if not (self.electrons[0].pt>self.cfg["cutEl1Pt"] and self.electrons[1].pt>self.cfg["cutEl2Pt"] ): return False
             # oppo sign cut
             if self.electrons[0].charge * self.electrons[1].charge > 0: return False
-            # nJets cut
-            if len(self.jets)<2: return False
+            # nJets nBJets cut
+            if not ( len(self.jets)>=2 and len(self.bjets)>=1 ): return False
             # # z-veto cut
-            self.dileptonMass = (self.electrons[0].p4()+self.electrons[1].p4()).M()
-            # if 80<self.dileptonMass<100: return False
-                
+            leptonOne = self.electrons[0] if self.electrons[0].pt>self.electrons[1].pt else self.electrons[1]
+            leptonTwo = self.electrons[1] if self.electrons[0].pt>self.electrons[1].pt else self.electrons[0]
+            self.dileptonMass = (leptonOne.p4()+leptonTwo.p4()).M()
+
             # fill Channel
             self.channel = 2
-            self.fill_branch_object("b_leptonOne", p4=self.electrons[0].p4(), pdgId=self.electrons[0].charge*11, relIso=self.electrons[0].pfRelIso03_all )
-            self.fill_branch_object("b_leptonTwo", p4=self.electrons[1].p4(), pdgId=self.electrons[1].charge*11, relIso=self.electrons[1].pfRelIso03_all )
+            self.fill_branch_object("b_leptonOne", p4=leptonOne.p4(), pdgId=leptonOne.charge*11, relIso=leptonOne.pfRelIso03_all )
+            self.fill_branch_object("b_leptonTwo", p4=leptonTwo.p4(), pdgId=leptonTwo.charge*11, relIso=leptonTwo.pfRelIso03_all )
 
         # MARK: emu
         elif len(self.electrons) == 1 and len(self.muons) == 1 and len(self.taus) == 0:
@@ -210,8 +210,8 @@ class WBrSelection(Module):
             if not (hltTest1 | hltTest2): return False 
             # oppo sign cut
             if self.muons[0].charge * self.electrons[0].charge > 0: return False
-            # nJets cut
-            if len(self.jets)<2: return False
+            # nJets nBJets cut
+            if not ( len(self.jets)>=2 and len(self.bjets)>=1 ): return False
 
             self.dileptonMass = (self.muons[0].p4()+self.electrons[0].p4()).M()
 
@@ -228,8 +228,8 @@ class WBrSelection(Module):
             if self.muons[0].pt<self.cfg["cutMu1Pt"]: return False
             # oppo sign cut
             if self.muons[0].charge * self.taus[0].charge > 0: return False
-            # nJets cut
-            if len(self.jets)<2: return False
+            # nJets nBJets cut
+            if not ( len(self.jets)>=2 and len(self.bjets)>=1 ): return False
 
             self.dileptonMass = (self.muons[0].p4()+self.taus[0].p4()).M()
 
@@ -246,24 +246,63 @@ class WBrSelection(Module):
             if self.electrons[0].pt<self.cfg["cutEl1Pt"]: return False
             # oppo sign cut
             if self.electrons[0].charge * self.taus[0].charge > 0: return False
-            # nJets cut
-            if len(self.jets)<2: return False
+            # nJets nBJets cut
+            if not ( len(self.jets)>=2 and len(self.bjets)>=1 ): return False
 
             self.dileptonMass = (self.electrons[0].p4()+self.taus[0].p4()).M()
 
             # fill Channel
-            self.channel = 9
+            self.channel = 7
             self.fill_branch_object("b_leptonOne", p4=self.electrons[0].p4(), pdgId=self.electrons[0].charge*11, relIso=self.electrons[0].pfRelIso03_all )
             self.fill_branch_object("b_leptonTwo", p4=self.taus[0].p4(), pdgId=self.taus[0].charge*15, relIso=(self.taus[0].rawIsodR03/self.taus[0].pt) )
+
+
+        # MARK: mu+jets
+        elif len(self.electrons) == 0 and len(self.muons) == 1 and len(self.taus) == 0:
+            # hlt cut
+            if not self.passMuTrigger: return False
+            # lepton pt cut
+            if self.muons[0].pt<self.cfg["cutMu1Pt"]: return False
+            # nJets nBJets cut
+            if not ( len(self.jets)>=4 and len(self.bjets)>=1 ): return False
+
+            # fill Channel
+            self.channel = 9
+            self.fill_branch_object("b_leptonOne", p4=self.muons[0].p4(), pdgId=self.muons[0].charge*13, relIso=self.muons[0].pfRelIso03_all )
+            self.fill_branch_object("b_leptonTwo")
+
+
+        # MARK: e+jets
+        elif len(self.electrons) == 1 and len(self.muons) == 0 and len(self.taus) == 1:
+            # hlt cut
+            if not self.passElTrigger: return False
+            # lepton pt cut
+            if self.electrons[0].pt<self.cfg["cutEl1Pt"]: return False
+            # nJets nBJets cut
+            if not ( len(self.jets)>=4 and len(self.bjets)>=1 ): return False
+
+            # fill Channel
+            self.channel = 11
+            self.fill_branch_object("b_leptonOne", p4=self.electrons[0].p4(), pdgId=self.electrons[0].charge*11, relIso=self.electrons[0].pfRelIso03_all )
+            self.fill_branch_object("b_leptonTwo" )
+
 
 
         # MARK: not selected
         else:
             return False
 
+
+
+
+
         # only passed event come here
         # print self.passElTrigger, self.passMuTrigger
         # fill event info and return
+        if not self.isData:
+            self.out.fillBranch("b_genWeight", self.genWeight)
+            self.out.fillBranch("b_btagWeight", self.btagWeight)
+
         self.out.fillBranch("b_channel", self.channel)
         self.out.fillBranch("b_multiplicity_electrons", len(self.electrons) )
         self.out.fillBranch("b_multiplicity_muons", len(self.muons))
@@ -279,13 +318,28 @@ class WBrSelection(Module):
     # -----------------------------
     # helper methods
     # -----------------------------
-    def fill_branch_object(self, objName, p4, pdgId, relIso):
-        self.out.fillBranch(objName+"_pt", p4.Pt())
-        self.out.fillBranch(objName+"_eta", p4.Eta())
-        self.out.fillBranch(objName+"_phi", p4.Phi())
-        self.out.fillBranch(objName+"_m", p4.M())
-        self.out.fillBranch(objName+"_pdgId", pdgId)
-        self.out.fillBranch(objName+"_relIso", relIso)
+    def fill_branch_object(self, objName, p4=None, pdgId=None, relIso=None):
+        if not (p4 is None):
+            self.out.fillBranch(objName+"_pt", p4.Pt())
+            self.out.fillBranch(objName+"_eta", p4.Eta())
+            self.out.fillBranch(objName+"_phi", p4.Phi())
+            self.out.fillBranch(objName+"_m", p4.M())
+        else:
+            self.out.fillBranch(objName+"_pt", 0 )
+            self.out.fillBranch(objName+"_eta", 0 )
+            self.out.fillBranch(objName+"_phi", 0 )
+            self.out.fillBranch(objName+"_m", 0 )
+
+        if not (pdgId is None):
+            self.out.fillBranch(objName+"_pdgId", pdgId)
+        else:
+            self.out.fillBranch(objName+"_pdgId", 0)
+
+        if not (relIso is None):
+            self.out.fillBranch(objName+"_relIso", relIso)
+        else:
+            self.out.fillBranch(objName+"_relIso", 0)
+
     
     def add_branch_object(self, objName):
         self.out.branch(objName+"_pt",   "F")
