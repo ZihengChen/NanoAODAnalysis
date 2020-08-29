@@ -38,6 +38,9 @@ class WBrPreproc(Module):
         """process event, return True (go to next module) or False (fail, go to next event)"""
         self.event = event
 
+        # if self.event.nJet <= 1:
+        #     return False
+
         # HLT
         passTrigger = self.check_hlt()
         if not passTrigger: 

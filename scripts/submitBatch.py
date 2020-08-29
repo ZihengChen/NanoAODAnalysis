@@ -2,9 +2,9 @@
 import PhysicsAnalysis.NanoAODAnalysis.BatchMaster as bm
 
 import sys
-# das_client -query="dataset=/SingleElectron/Run2016*-02Apr2020-v1/NANOAOD" # | wc -l
+# das_client -query="dataset=/SingleElectron/Run2018A*-02Apr2020-v1/NANOAOD" # | wc -l
 # python PhysicsAnalysis/NanoAODAnalysis/python/WBrAnalyzer.py localout ../../mc.root --year=2018 --isData=0 --max-entries=30000 
-# python PhysicsAnalysis/NanoAODAnalysis/python/WBrAnalyzer.py localout ../../data.root --year=2018 --isData=1 --max-entries=30000 
+# python PhysicsAnalysis/NanoAODAnalysis/python/WBrAnalyzer.py localout ../../data2.root --year=2018 --isData=1 --max-entries=30000 
 
 
 
@@ -18,7 +18,9 @@ stage_dir  = 'batch'
 output_dir = '/store/user/zchen/batchout'
 location   = 'lpc'
 
-nEvtPerJob = 4 # in unit of 1e6
+
+
+
 
 # -----------------------------
 # Set job configurations.  
@@ -26,6 +28,8 @@ nEvtPerJob = 4 # in unit of 1e6
 samplesDict = {}
 
 
+
+nEvtPerJob = 12 # faster jobs, # in unit of 1e6 , 5-10 are good settings. 
 
 #################################################
 #                                               #
@@ -86,6 +90,14 @@ samplesDict['2018_SingleMuon'] = [
 
 
 
+
+
+
+
+
+
+
+nEvtPerJob = 5 # slower jobs, for sig MC. in unit of 1e6 , 5-10 are good settings. 
 
 #################################################
 #                                               #
@@ -176,6 +188,10 @@ samplesDict['2017_w'] = [
     bm.JobConfig( 
     dataset='/WJetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8-v1/NANOAODSIM',
     nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=0, suffix='2017_WJets'),
+    # wjets inclusive ext1
+    bm.JobConfig( 
+    dataset='/WJetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8_ext1-v1/NANOAODSIM',
+    nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=0, suffix='2017_WJets_ext')    
 ]
 
 
@@ -231,10 +247,14 @@ samplesDict['2018_w'] = [
 
 # z
 samplesDict['2018_z'] = [
+
+
     # zjets inclusive
     bm.JobConfig( 
-        dataset='/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=0, suffix='2018_ZJets'),
+        dataset='/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21_ext2-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=0, suffix='2018_ZJets')
+
+
 ]
 
 
