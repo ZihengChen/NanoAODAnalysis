@@ -90,13 +90,15 @@ if __name__ == "__main__":
     if not options.isData:
         # btag reweighting
         eval("modules.append( btagSF_deepcsvM_{}())".format(options.year))
-        # pu reweighting
-        eval("modules.append( puAutoWeight_{}())".format(options.year))
+
 
     # my selection
     modules.append( WBrSelectionModule(options.year, options.isData)  )
-    # MC correction
+ 
+
     if not options.isData:
+        # pu reweighting
+        eval("modules.append( puAutoWeight_{}())".format(options.year))
         # prefiring reweighting
         if options.year in ["2016","2017"]:
             eval("modules.append( PrefCorr{}())".format(options.year))

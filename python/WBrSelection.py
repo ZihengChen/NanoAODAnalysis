@@ -161,18 +161,17 @@ class WBrSelection(Module):
             
             # hlt cut
             if not ( self.passMuTrigger ): return False
-            # lepton pt cut
-            if not (self.muons[0].pt>self.cfg["cutMu1Pt"] and self.muons[1].pt>self.cfg["cutMu2Pt"] ): return False
-            # oppo sign cut
-            if self.muons[0].charge * self.muons[1].charge > 0: return False
-            # nJets nBJets cut
-            if not ( len(self.jets)>=2 and len(self.bjets)>=1 ): return False
 
-            # # z-veto cut
             leptonOne = self.muons[0] if self.muons[0].pt>self.muons[1].pt else self.muons[1]
             leptonTwo = self.muons[1] if self.muons[0].pt>self.muons[1].pt else self.muons[0]
+            # lepton pt cut
+            if not (leptonOne.pt>self.cfg["cutMu1Pt"] and leptonTwo.pt>self.cfg["cutMu2Pt"] ): return False
+            # oppo sign cut
+            if leptonOne.charge * leptonTwo.charge > 0: return False
+            # nJets nBJets cut
+            if not ( len(self.jets)>=2 and len(self.bjets)>=1 ): return False
+            # # z-veto cut
             self.dileptonMass = (leptonOne.p4()+leptonTwo.p4()).M()
-            
             # fill Channel
             self.channel = 1
             self.fill_branch_object("b_leptonOne", p4=leptonOne.p4(), pdgId=leptonOne.charge*13, relIso=leptonOne.pfRelIso03_all )
@@ -186,17 +185,18 @@ class WBrSelection(Module):
 
             # hlt cut
             if not (self.passElTrigger): return False 
+
+            leptonOne = self.electrons[0] if self.electrons[0].pt>self.electrons[1].pt else self.electrons[1]
+            leptonTwo = self.electrons[1] if self.electrons[0].pt>self.electrons[1].pt else self.electrons[0]
+
             # lepton pt cut
-            if not (self.electrons[0].pt>self.cfg["cutEl1Pt"] and self.electrons[1].pt>self.cfg["cutEl2Pt"] ): return False
+            if not (leptonOne.pt>self.cfg["cutEl1Pt"] and leptonTwo.pt>self.cfg["cutEl2Pt"] ): return False
             # oppo sign cut
-            if self.electrons[0].charge * self.electrons[1].charge > 0: return False
+            if leptonOne.charge * leptonTwo.charge > 0: return False
             # nJets nBJets cut
             if not ( len(self.jets)>=2 and len(self.bjets)>=1 ): return False
             # # z-veto cut
-            leptonOne = self.electrons[0] if self.electrons[0].pt>self.electrons[1].pt else self.electrons[1]
-            leptonTwo = self.electrons[1] if self.electrons[0].pt>self.electrons[1].pt else self.electrons[0]
             self.dileptonMass = (leptonOne.p4()+leptonTwo.p4()).M()
-
             # fill Channel
             self.channel = 2
             self.fill_branch_object("b_leptonOne", p4=leptonOne.p4(), pdgId=leptonOne.charge*11, relIso=leptonOne.pfRelIso03_all )
@@ -279,7 +279,7 @@ class WBrSelection(Module):
 
 
         # MARK: e+jets
-        elif len(self.electrons) == 1 and len(self.muons) == 0 and len(self.taus) == 1:
+        elif len(self.electrons) == 1 and len(self.muons) == 0 and len(self.taus) == 0:
             # hlt cut
             if not self.passElTrigger: return False
             # lepton pt cut

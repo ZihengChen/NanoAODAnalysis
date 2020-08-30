@@ -90,13 +90,6 @@ samplesDict['2018_SingleMuon'] = [
 
 
 
-
-
-
-
-
-
-
 nEvtPerJob = 4
 
 #################################################
@@ -247,14 +240,10 @@ samplesDict['2018_w'] = [
 
 # z
 samplesDict['2018_z'] = [
-
-
     # zjets inclusive
     bm.JobConfig( 
         dataset='/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21_ext2-v1/NANOAODSIM',
         nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=0, suffix='2018_ZJets')
-
-
 ]
 
 
@@ -262,8 +251,10 @@ samplesDict['2018_z'] = [
 # submit to batch
 # -----------------------------
 samplesToSubmit = samplesDict.keys()
+samplesToSubmit.sorted()
 
 configs = []
+
 for s in samplesToSubmit:
     if s[:4] in ["2016","2017","2018"]:
         configs += samplesDict[s]
@@ -277,7 +268,7 @@ batchMaster = bm.BatchMaster(
     location    = location
 )
 
-batchMaster.submit_to_batch(doSubmit=True)
+batchMaster.submit_to_batch(doSubmit=False)
 
 
 
