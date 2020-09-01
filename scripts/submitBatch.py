@@ -3,8 +3,12 @@ import PhysicsAnalysis.NanoAODAnalysis.BatchMaster as bm
 
 import sys
 # das_client -query="dataset=/SingleElectron/Run2018A*-02Apr2020-v1/NANOAOD" # | wc -l
+# python PhysicsAnalysis/NanoAODAnalysis/python/WBrAnalyzer.py localout ../../mc.root --year=2016 --isData=0 --max-entries=30000 
+# python PhysicsAnalysis/NanoAODAnalysis/python/WBrAnalyzer.py localout ../../mc.root --year=2017 --isData=0 --max-entries=30000 
 # python PhysicsAnalysis/NanoAODAnalysis/python/WBrAnalyzer.py localout ../../mc.root --year=2018 --isData=0 --max-entries=30000 
-# python PhysicsAnalysis/NanoAODAnalysis/python/WBrAnalyzer.py localout ../../data2.root --year=2018 --isData=1 --max-entries=100000 
+# python PhysicsAnalysis/NanoAODAnalysis/python/WBrAnalyzer.py localout ../../data.root --year=2016 --isData=1 --max-entries=50000 
+# python PhysicsAnalysis/NanoAODAnalysis/python/WBrAnalyzer.py localout ../../data.root --year=2017 --isData=1 --max-entries=50000 
+# python PhysicsAnalysis/NanoAODAnalysis/python/WBrAnalyzer.py localout ../../data.root --year=2018 --isData=1 --max-entries=50000 
 
 
 
@@ -29,7 +33,7 @@ samplesDict = {}
 
 
 
-nEvtPerJob = 12 # faster jobs, # in unit of 1e6 , 5-10 are good settings. 
+nEvtPerJob = 8 # faster jobs, # in unit of 1e6 , 5-10 are good settings. 
 
 #################################################
 #                                               #
@@ -127,20 +131,54 @@ samplesDict['2016_top'] = [
 
 # w
 samplesDict['2016_w'] = [
-    # wjets inclusive
+    # # wjets inclusive
+    # bm.JobConfig( 
+    # dataset='/WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM',
+    # nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=0, suffix='2016_WJets'),
+
+    # bm.JobConfig( 
+    # dataset='/WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8_ext2-v1/NANOAODSIM',
+    # nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=0, suffix='2016_WJets_ext'),
+
+
+    # w1jets inclusive
     bm.JobConfig( 
-    dataset='/WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM',
-    nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=0, suffix='2016_WJets'),
+    dataset='/W1JetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM',
+    nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=0, suffix='2016_W1Jets'),
+    # w2jets inclusive
+    bm.JobConfig( 
+    dataset='/W2JetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM',
+    nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=0, suffix='2016_W2Jets'),
+    # w3jets inclusive
+    bm.JobConfig( 
+    dataset='/W3JetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM',
+    nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=0, suffix='2016_W3Jets'),
+    # w4jets inclusive
+    bm.JobConfig( 
+    dataset='/W4JetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM',
+    nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=0, suffix='2016_W4Jets'),
+     
 ]
 
 # z
 samplesDict['2016_z'] = [
-    # zjets inclusive
+    # zjets m50 inclusive
     bm.JobConfig(
     dataset='/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8_ext2-v1/NANOAODSIM',
-    nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=0, suffix='2016_ZJets'),
-]
+    nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=0, suffix='2016_ZJetsM50'),
 
+    # zjets m-10To50 inclusive
+    bm.JobConfig(
+    dataset='/DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM',
+    nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=0, suffix='2016_ZJetsM10To50'),
+
+    bm.JobConfig(
+    dataset='/DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8_ext1-v1/NANOAODSIM',
+    nEvtPerJobIn1e6=nEvtPerJob, year="2016", isData=0, suffix='2016_ZJetsM10To50_ext'),
+
+    
+]
+ß
 
 #################################################
 #                                               #
@@ -177,23 +215,63 @@ samplesDict['2017_top'] = [
 
 # w
 samplesDict['2017_w'] = [
-    # wjets inclusive
+    # # wjets inclusive
+    
+    # bm.JobConfig( 
+    # dataset='/WJetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8-v1/NANOAODSIM',
+    # nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=0, suffix='2017_WJets'),
+    # # wjets inclusive ext1
+    # bm.JobConfig( 
+    # dataset='/WJetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8_ext1-v1/NANOAODSIM',
+    # nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=0, suffix='2017_WJets_ext')
+    
+    # w1jet
     bm.JobConfig( 
-    dataset='/WJetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8-v1/NANOAODSIM',
-    nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=0, suffix='2017_WJets'),
-    # wjets inclusive ext1
+    dataset='/W1JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8-v1/NANOAODSIM',
+    nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=0, suffix='2017_W1Jets'),
+    # w2jet
     bm.JobConfig( 
-    dataset='/WJetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8_ext1-v1/NANOAODSIM',
-    nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=0, suffix='2017_WJets_ext')    
+    dataset='/W2JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8-v1/NANOAODSIM',
+    nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=0, suffix='2017_W2Jets'),
+    # w3jet
+    bm.JobConfig( 
+    dataset='/W3JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8-v1/NANOAODSIM',
+    nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=0, suffix='2017_W3Jets'),
+    # w4jet
+    bm.JobConfig( 
+    dataset='/W4JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_new_pmx_102X_mc2017_realistic_v8-v1/NANOAODSIM',
+    nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=0, suffix='2017_W4Jets'),
+
 ]
 
 
 # z
 samplesDict['2017_z'] = [
-    # zjets inclusive
+    # zjets m50 inclusive
     bm.JobConfig( 
     dataset='/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_new_pmx_102X_mc2017_realistic_v8-v1/NANOAODSIM',
-    nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=0, suffix='2017_ZJets'),
+    nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=0, suffix='2017_ZJetsM50'),
+
+    bm.JobConfig( 
+    dataset='/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_new_pmx_102X_mc2017_realistic_v8_ext1-v1/NANOAODSIM',
+    nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=0, suffix='2017_ZJetsM50_ext'),
+
+    # there is no zjets m-10To50 inclusive
+
+    # # z0jets
+    # bm.JobConfig( 
+    # dataset=' /DYJetsToLL_0J_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8-v1/NANOAODSIM',
+    # nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=0, suffix='2017_Z0Jets'),
+    # # z1jets
+    # bm.JobConfig( 
+    # dataset=' /DYJetsToLL_1J_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8-v1/NANOAODSIM',
+    # nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=0, suffix='2017_Z1Jets'),
+    # # z2jets
+    # bm.JobConfig( 
+    # dataset=' /DYJetsToLL_2J_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIFall17NanoAODv7-PU2017_12Apr2018_Nano02Apr2020_102X_mc2017_realistic_v8-v1/NANOAODSIM',
+    # nEvtPerJobIn1e6=nEvtPerJob, year="2017", isData=0, suffix='2017_Z2Jets'),
+
+
 ]
 
 
@@ -232,9 +310,29 @@ samplesDict['2018_top'] = [
 # w
 samplesDict['2018_w'] = [
     # wjets inclusive
+    # bm.JobConfig( 
+    #     dataset='/WJetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
+    #     nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=0, suffix='2018_WJets'),
+
+    # w1jet
     bm.JobConfig( 
-        dataset='/WJetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=0, suffix='2018_WJets'),
+        dataset='/W1JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=0, suffix='2018_W1Jets'),
+
+    # w2jet
+    bm.JobConfig( 
+        dataset='/W2JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=0, suffix='2018_W2Jets'),
+    # w3jet
+    bm.JobConfig( 
+        dataset='/W3JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=0, suffix='2018_W3Jets'),
+
+    # w4jet
+    bm.JobConfig( 
+        dataset='/W4JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
+        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=0, suffix='2018_W4Jets'),
+
 ]
 
 
@@ -243,15 +341,35 @@ samplesDict['2018_z'] = [
     # zjets inclusive
     bm.JobConfig( 
         dataset='/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21_ext2-v1/NANOAODSIM',
-        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=0, suffix='2018_ZJets')
+        nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=0, suffix='2018_ZJetsM50'),
+    
+    # there is no zjets m-10To50 inclusive
+
+
+    # # z0jets
+    # bm.JobConfig( 
+    #     dataset='/DYJetsToLL_0J_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
+    #     nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=0, suffix='2018_Z0Jets'),
+    # # z1jets
+    # bm.JobConfig( 
+    #     dataset='/DYJetsToLL_1J_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
+    #     nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=0, suffix='2018_Z1Jets'),
+
+    # # z2jets
+    # bm.JobConfig( 
+    #     dataset='/DYJetsToLL_2J_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/NANOAODSIM',
+    #     nEvtPerJobIn1e6=nEvtPerJob, year="2018", isData=0, suffix='2018_Z2Jets'),
+
+
 ]
+
 
 
 # -----------------------------
 # submit to batch
 # -----------------------------
 samplesToSubmit = samplesDict.keys()
-samplesToSubmit.sorted()
+samplesToSubmit.sort()
 
 configs = []
 
@@ -268,7 +386,7 @@ batchMaster = bm.BatchMaster(
     location    = location
 )
 
-batchMaster.submit_to_batch(doSubmit=False)
+batchMaster.submit_to_batch(doSubmit=True)
 
 
 
